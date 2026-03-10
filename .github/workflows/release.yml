@@ -25,7 +25,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build JAR
-        run: ./gradlew build
+        run: mkdir -p /tmp/hytale-empty && ./gradlew shadowJar -Phytale.home_path=/tmp/hytale-empty
 
       - name: Get tag name
         id: tag

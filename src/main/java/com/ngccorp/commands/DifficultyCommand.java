@@ -60,23 +60,22 @@ public class DifficultyCommand extends AbstractCommand {
         @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
       Difficulty.get().setAndSave(this.level);
       commandContext.sendMessage(Message.raw(String.format(
-          "Difficulty set to %s (mob x%.2f, environment x%.2f).",
+          "Difficulty set to %s (mob x%.2f, environment x%.2f, fall x%.2f).",
           this.level.name(),
           this.level.getMobDamageMultiplier(),
-          this.level.getEnvironmentDamageMultiplier())));
+          this.level.getEnvironmentDamageMultiplier(),
+          this.level.getFallDamageMultiplier())));
     }
   }
 
   @Nullable
   @Override
   protected CompletableFuture<Void> execute(@Nonnull CommandContext context) {
-    float mobDifficulty = DifficultySettings.getMobMultiplier();
-    float envDifficulty = DifficultySettings.getEnvMultiplier();
-
     context.sendMessage(Message.raw(String.format(
-        "Difficulty: mob x%.2f, environment x%.2f",
-        mobDifficulty,
-        envDifficulty)));
+        "Difficulty: mob x%.2f, environment x%.2f, fall x%.2f",
+        DifficultySettings.getMobMultiplier(),
+        DifficultySettings.getEnvMultiplier(),
+        DifficultySettings.getFallMultiplier())));
     return CompletableFuture.completedFuture(null);
   }
 }

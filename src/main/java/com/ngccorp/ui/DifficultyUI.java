@@ -20,8 +20,9 @@ import javax.annotation.Nonnull;
  *
  * <p>
  * Opened via {@code /difficulty ui}.
- * Provides four preset buttons and two fine-tuning sliders
- * (mob damage multiplier, environment damage multiplier).
+ * Provides four preset buttons and three fine-tuning sliders
+ * (mob damage multiplier, environment damage multiplier, fall damage
+ * multiplier).
  * Changes are applied and persisted immediately on every interaction.
  *
  */
@@ -71,8 +72,9 @@ public final class DifficultyUI {
                   ctx.editById(id, ButtonBuilder.class,
                       b -> b.withDisabled(false));
                 }
+                Difficulty.get().setAndSave(value, DifficultySettings.getEnvMultiplier(),
+                    DifficultySettings.getFallMultiplier());
                 ctx.updatePage(false);
-                Difficulty.get().setAndSave(value, DifficultySettings.getEnvMultiplier());
               });
         });
 
@@ -89,8 +91,28 @@ public final class DifficultyUI {
                   ctx.editById(id, ButtonBuilder.class,
                       b -> b.withDisabled(false));
                 }
+                Difficulty.get().setAndSave(DifficultySettings.getMobMultiplier(), value,
+                    DifficultySettings.getFallMultiplier());
                 ctx.updatePage(false);
-                Difficulty.get().setAndSave(DifficultySettings.getMobMultiplier(), value);
+              });
+        });
+
+    // ── Fall damage slider
+    page.getById("fall-slider", FloatSliderBuilder.class)
+        .ifPresent(slider -> {
+          slider.addEventListener(CustomUIEventBindingType.ValueChanged,
+              (Float value, UIContext ctx) -> {
+                ctx.editById("fall-slider", FloatSliderBuilder.class,
+                    s -> s.withValue(value));
+                ctx.editById("fall-label", LabelBuilder.class,
+                    l -> l.withText(formatMultiplier(value)));
+                for (String id : PRESET_IDS) {
+                  ctx.editById(id, ButtonBuilder.class,
+                      b -> b.withDisabled(false));
+                }
+                Difficulty.get().setAndSave(DifficultySettings.getMobMultiplier(),
+                    DifficultySettings.getEnvMultiplier(), value);
+                ctx.updatePage(false);
               });
         });
 
@@ -108,6 +130,11 @@ public final class DifficultyUI {
         s -> s.withValue(DifficultySettings.getEnvMultiplier()));
     page.editById("env-label", LabelBuilder.class,
         l -> l.withText(formatMultiplier(DifficultySettings.getEnvMultiplier())));
+
+    page.editById("fall-slider", FloatSliderBuilder.class,
+        s -> s.withValue(DifficultySettings.getFallMultiplier()));
+    page.editById("fall-label", LabelBuilder.class,
+        l -> l.withText(formatMultiplier(DifficultySettings.getFallMultiplier())));
 
     // Visual feedback: enable the active preset
     if (DifficultySettings.isVanilla()) {
@@ -142,16 +169,21 @@ public final class DifficultyUI {
             (ignored, ctx) -> {
               float mob = level.getMobDamageMultiplier();
               float env = level.getEnvironmentDamageMultiplier();
+              float fall = level.getFallDamageMultiplier();
 
               // Sync slider positions and labels to the new preset values.
               ctx.editById("mob-slider", FloatSliderBuilder.class,
                   s -> s.withValue(mob));
               ctx.editById("env-slider", FloatSliderBuilder.class,
                   s -> s.withValue(env));
+              ctx.editById("fall-slider", FloatSliderBuilder.class,
+                  s -> s.withValue(fall));
               ctx.editById("mob-label", LabelBuilder.class,
                   l -> l.withText(formatMultiplier(mob)));
               ctx.editById("env-label", LabelBuilder.class,
                   l -> l.withText(formatMultiplier(env)));
+              ctx.editById("fall-label", LabelBuilder.class,
+                  l -> l.withText(formatMultiplier(fall)));
 
               // Visual feedback: disable the active preset, re-enable the rest.
               for (String id : PRESET_IDS) {
@@ -160,7 +192,7 @@ public final class DifficultyUI {
               }
 
               ctx.updatePage(true);
-              Difficulty.get().setAndSave(mob, env);
+              Difficulty.get().setAndSave(mob, env, fall);
             }));
   }
 

@@ -7,6 +7,7 @@ import com.hypixel.hytale.component.SystemGroup;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
+import com.hypixel.hytale.server.core.modules.entity.damage.DamageCause;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageEventSystem;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageModule;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -52,15 +53,36 @@ public class DamageFilter extends DamageEventSystem {
 
     Damage.Source source = damage.getSource();
 
-    if (source instanceof Damage.EnvironmentSource || source == Damage.NULL_SOURCE) {
-      // Fall damage, fire, void, drowning, suffocation, …
-      damage.setAmount(damage.getAmount() * DifficultySettings.getEnvMultiplier());
-    } else if (source instanceof Damage.EntitySource entitySource) {
+    if (source instanceof Damage.EntitySource entitySource) {
       // Only scale mob damage — leave PvP unmodified.
+      System.out.println("Difficulty: MOB DAMAGE");
+
       boolean attackerIsPlayer = buffer.getComponent(entitySource.getRef(), Player.getComponentType()) != null;
+
       if (!attackerIsPlayer) {
+        System.out.println("Difficulty: MOB DAMAGE 2");
+
         damage.setAmount(damage.getAmount() * DifficultySettings.getMobMultiplier());
       }
+
+      return;
+    }
+
+    DamageCause cause = DamageCause.getAssetMap().getAsset(damage.getDamageCauseIndex());
+    boolean isFall = cause != null && cause == DamageCause.FALL;
+
+    if (isFall) {
+      System.out.println("Difficulty: FALL DAMAGE");
+      // Fall damage is scaled independently.
+      damage.setAmount(damage.getAmount() * DifficultySettings.getFallMultiplier());
+
+      return;
+    }
+
+    if (source instanceof Damage.EnvironmentSource || source == Damage.NULL_SOURCE) {
+      System.out.println("Difficulty: ENV DAMAGE");
+      // Fire, void, drowning, suffocation, …
+      damage.setAmount(damage.getAmount() * DifficultySettings.getEnvMultiplier());
     }
   }
 }

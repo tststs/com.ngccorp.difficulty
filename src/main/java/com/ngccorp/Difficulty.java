@@ -29,6 +29,7 @@ public class Difficulty extends JavaPlugin {
   @Override
   protected void setup() {
     this.getEntityStoreRegistry().registerSystem(new DamageFilter());
+    this.getEntityStoreRegistry().registerSystem(new PlayerDamageFilter());
     this.getCommandRegistry().registerCommand(new DifficultyCommand());
   }
 
@@ -38,22 +39,24 @@ public class Difficulty extends JavaPlugin {
     DifficultySettings.setMultipliers(
         this.config.get().getMobMultiplier(),
         this.config.get().getEnvMultiplier(),
-        this.config.get().getFallMultiplier());
+        this.config.get().getFallMultiplier(),
+        this.config.get().getPlayerMultiplier());
   }
 
   /**
    * Updates all multipliers in memory and persists them to disk.
    * Called by {@link DifficultyCommand} and the admin UI.
    */
-  public void setAndSave(float mob, float env, float fall) {
-    DifficultySettings.setMultipliers(mob, env, fall);
-    this.config.get().setMultipliers(mob, env, fall);
+  public void setAndSave(float mob, float env, float fall, float player) {
+    DifficultySettings.setMultipliers(mob, env, fall, player);
+    this.config.get().setMultipliers(mob, env, fall, player);
     this.config.save(); // async, fire-and-forget
   }
 
   /** Convenience overload that snaps to a named preset. */
   public void setAndSave(@Nonnull DifficultyLevel level) {
-    setAndSave(level.getMobDamageMultiplier(), level.getEnvironmentDamageMultiplier(), level.getFallDamageMultiplier());
+    setAndSave(level.getMobDamageMultiplier(), level.getEnvironmentDamageMultiplier(), level.getFallDamageMultiplier(),
+        level.getPlayerDamageMultiplier());
   }
 
   public static class DifficultyConfig {
@@ -76,11 +79,17 @@ public class Difficulty extends JavaPlugin {
             (cfg, s) -> cfg.fallMultiplier = Float.parseFloat(s),
             cfg -> String.valueOf(cfg.fallMultiplier))
         .add()
+        .append(
+            new KeyedCodec<>("PlayerMultiplier", Codec.STRING),
+            (cfg, s) -> cfg.playerMultiplier = Float.parseFloat(s),
+            cfg -> String.valueOf(cfg.playerMultiplier))
+        .add()
         .build();
 
     private float mobMultiplier = 1.0f;
     private float envMultiplier = 1.0f;
     private float fallMultiplier = 1.0f;
+    private float playerMultiplier = 1.0f;
 
     public DifficultyConfig() {
     }
@@ -97,10 +106,15 @@ public class Difficulty extends JavaPlugin {
       return fallMultiplier;
     }
 
-    public void setMultipliers(float mob, float env, float fall) {
+    public float getPlayerMultiplier() {
+      return playerMultiplier;
+    }
+
+    public void setMultipliers(float mob, float env, float fall, float player) {
       this.mobMultiplier = mob;
       this.envMultiplier = env;
       this.fallMultiplier = fall;
+      this.playerMultiplier = player;
     }
   }
 }

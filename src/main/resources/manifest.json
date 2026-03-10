@@ -1,24 +1,24 @@
 {
-    "Group": "com.ngccorp.difficulty",
-    "Name": "NGC Corp. - Difficulty",
-    "Version": "0.2.0",
-    "Description": "Scale mob and environment damage server-wide with named presets or fine-grained sliders.",
-    "Authors": [
-        {
-            "Name": "tststs",
-            "Email": "hytale@ngc-corp.com",
-            "Url": "https://github.com/ngc-corp"
-        }
-    ],
-    "Website": "https://github.com/ngc-corp/com.ngccorp.difficulty",
-    "DisabledByDefault": false,
-    "IncludesAssetPack": false,
-    "Dependencies": {
-        "Ellie:HyUI": "*"
-    },
-    "OptionalDependencies": {
-        "Buuz135:MultipleHUD": "*"
-    },
-    "ServerVersion": "*",
-    "Main": "com.ngccorp.Difficulty"
+  "Group": "com.ngccorp.difficulty",
+  "Name": "NGC Corp. - Difficulty",
+  "Version": "0.3.0",
+  "Description": "Scale mob and environment damage server-wide with named presets or fine-grained sliders.",
+  "Authors": [
+    {
+      "Name": "tststs",
+      "Email": "hytale@ngc-corp.com",
+      "Url": "https://github.com/ngc-corp"
+    }
+  ],
+  "Website": "https://github.com/ngc-corp/com.ngccorp.difficulty",
+  "DisabledByDefault": false,
+  "IncludesAssetPack": false,
+  "Dependencies": {
+    "Ellie:HyUI": "*"
+  },
+  "OptionalDependencies": {
+    "Buuz135:MultipleHUD": "*"
+  },
+  "ServerVersion": "*",
+  "Main": "com.ngccorp.Difficulty"
 }

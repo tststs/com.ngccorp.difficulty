@@ -1,6 +1,6 @@
 # NGC Corp. Difficulty
 
-A [Hytale](https://hytale.com) server plugin that scales damage dealt to players across three independent axes: **mob damage**, **environment damage** (fire, void, drowning, suffocation, etc.), and **fall damage**. PvP damage is always left unmodified.
+A [Hytale](https://hytale.com) server plugin that scales damage across four independent axes: **mob damage**, **environment damage** (fire, void, drowning, suffocation, etc.), **fall damage**, and **player damage** (damage players deal to mobs). PvP damage is always left unmodified.
 
 Settings persist across restarts and can be changed live — without reloading the server.
 
@@ -8,18 +8,21 @@ Settings persist across restarts and can be changed live — without reloading t
 
 - Four named presets: Normal, Medium, Hard, Nightmare
 - Fine-grained sliders (0.1× – 10×) via an in-game admin UI
-- Independent mob, environment, and fall damage multipliers
+- Independent mob, environment, fall, and player damage multipliers
+- Player damage multiplier is custom-only — presets always leave it at ×1.0
 - Zero overhead when all multipliers are 1.0 (vanilla)
 - Config persisted to disk automatically
 
 ## Presets
 
-| Preset    | Mob damage | Environment damage | Fall damage |
-|-----------|:----------:|:------------------:|:-----------:|
-| Normal    | ×1.0       | ×1.0               | ×1.0        |
-| Medium    | ×1.5       | ×1.25              | ×1.25       |
-| Hard      | ×2.0       | ×1.5               | ×1.75       |
-| Nightmare | ×3.0       | ×2.5               | ×2.0        |
+| Preset    | Mob damage | Environment damage | Fall damage | Player damage |
+|-----------|:----------:|:------------------:|:-----------:|:-------------:|
+| Normal    | ×1.0       | ×1.0               | ×1.0        | ×1.0          |
+| Medium    | ×1.5       | ×1.25              | ×1.25       | ×1.0          |
+| Hard      | ×2.0       | ×1.5               | ×1.75       | ×1.0          |
+| Nightmare | ×3.0       | ×2.5               | ×2.0        | ×1.0          |
+
+The player damage multiplier is intentionally not part of any preset — it is only adjustable via the admin UI slider or by editing the config directly. This keeps preset behaviour predictable while still allowing server-specific tuning.
 
 ## Commands
 

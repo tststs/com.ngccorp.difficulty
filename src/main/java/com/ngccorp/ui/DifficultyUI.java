@@ -73,7 +73,7 @@ public final class DifficultyUI {
                       b -> b.withDisabled(false));
                 }
                 Difficulty.get().setAndSave(value, DifficultySettings.getEnvMultiplier(),
-                    DifficultySettings.getFallMultiplier());
+                    DifficultySettings.getFallMultiplier(), DifficultySettings.getPlayerMultiplier());
                 ctx.updatePage(false);
               });
         });
@@ -92,7 +92,7 @@ public final class DifficultyUI {
                       b -> b.withDisabled(false));
                 }
                 Difficulty.get().setAndSave(DifficultySettings.getMobMultiplier(), value,
-                    DifficultySettings.getFallMultiplier());
+                    DifficultySettings.getFallMultiplier(), DifficultySettings.getPlayerMultiplier());
                 ctx.updatePage(false);
               });
         });
@@ -111,7 +111,26 @@ public final class DifficultyUI {
                       b -> b.withDisabled(false));
                 }
                 Difficulty.get().setAndSave(DifficultySettings.getMobMultiplier(),
-                    DifficultySettings.getEnvMultiplier(), value);
+                    DifficultySettings.getEnvMultiplier(), value, DifficultySettings.getPlayerMultiplier());
+                ctx.updatePage(false);
+              });
+        });
+
+    // ── Player damage slider
+    page.getById("player-slider", FloatSliderBuilder.class)
+        .ifPresent(slider -> {
+          slider.addEventListener(CustomUIEventBindingType.ValueChanged,
+              (Float value, UIContext ctx) -> {
+                ctx.editById("player-slider", FloatSliderBuilder.class,
+                    s -> s.withValue(value));
+                ctx.editById("player-label", LabelBuilder.class,
+                    l -> l.withText(formatMultiplier(value)));
+                for (String id : PRESET_IDS) {
+                  ctx.editById(id, ButtonBuilder.class,
+                      b -> b.withDisabled(false));
+                }
+                Difficulty.get().setAndSave(DifficultySettings.getMobMultiplier(),
+                    DifficultySettings.getEnvMultiplier(), DifficultySettings.getFallMultiplier(), value);
                 ctx.updatePage(false);
               });
         });
@@ -135,6 +154,11 @@ public final class DifficultyUI {
         s -> s.withValue(DifficultySettings.getFallMultiplier()));
     page.editById("fall-label", LabelBuilder.class,
         l -> l.withText(formatMultiplier(DifficultySettings.getFallMultiplier())));
+
+    page.editById("player-slider", FloatSliderBuilder.class,
+        s -> s.withValue(DifficultySettings.getPlayerMultiplier()));
+    page.editById("player-label", LabelBuilder.class,
+        l -> l.withText(formatMultiplier(DifficultySettings.getPlayerMultiplier())));
 
     // Visual feedback: enable the active preset
     if (DifficultySettings.isVanilla()) {
@@ -170,6 +194,7 @@ public final class DifficultyUI {
               float mob = level.getMobDamageMultiplier();
               float env = level.getEnvironmentDamageMultiplier();
               float fall = level.getFallDamageMultiplier();
+              float player = level.getPlayerDamageMultiplier();
 
               // Sync slider positions and labels to the new preset values.
               ctx.editById("mob-slider", FloatSliderBuilder.class,
@@ -178,12 +203,16 @@ public final class DifficultyUI {
                   s -> s.withValue(env));
               ctx.editById("fall-slider", FloatSliderBuilder.class,
                   s -> s.withValue(fall));
+              ctx.editById("player-slider", FloatSliderBuilder.class,
+                  s -> s.withValue(player));
               ctx.editById("mob-label", LabelBuilder.class,
                   l -> l.withText(formatMultiplier(mob)));
               ctx.editById("env-label", LabelBuilder.class,
                   l -> l.withText(formatMultiplier(env)));
               ctx.editById("fall-label", LabelBuilder.class,
                   l -> l.withText(formatMultiplier(fall)));
+              ctx.editById("player-label", LabelBuilder.class,
+                  l -> l.withText(formatMultiplier(player)));
 
               // Visual feedback: disable the active preset, re-enable the rest.
               for (String id : PRESET_IDS) {
@@ -192,7 +221,7 @@ public final class DifficultyUI {
               }
 
               ctx.updatePage(true);
-              Difficulty.get().setAndSave(mob, env, fall);
+              Difficulty.get().setAndSave(mob, env, fall, player);
             }));
   }
 

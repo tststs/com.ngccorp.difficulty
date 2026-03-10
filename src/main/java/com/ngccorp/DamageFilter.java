@@ -55,13 +55,9 @@ public class DamageFilter extends DamageEventSystem {
 
     if (source instanceof Damage.EntitySource entitySource) {
       // Only scale mob damage — leave PvP unmodified.
-      System.out.println("Difficulty: MOB DAMAGE");
-
       boolean attackerIsPlayer = buffer.getComponent(entitySource.getRef(), Player.getComponentType()) != null;
 
       if (!attackerIsPlayer) {
-        System.out.println("Difficulty: MOB DAMAGE 2");
-
         damage.setAmount(damage.getAmount() * DifficultySettings.getMobMultiplier());
       }
 
@@ -72,7 +68,6 @@ public class DamageFilter extends DamageEventSystem {
     boolean isFall = cause != null && cause == DamageCause.FALL;
 
     if (isFall) {
-      System.out.println("Difficulty: FALL DAMAGE");
       // Fall damage is scaled independently.
       damage.setAmount(damage.getAmount() * DifficultySettings.getFallMultiplier());
 
@@ -80,7 +75,6 @@ public class DamageFilter extends DamageEventSystem {
     }
 
     if (source instanceof Damage.EnvironmentSource || source == Damage.NULL_SOURCE) {
-      System.out.println("Difficulty: ENV DAMAGE");
       // Fire, void, drowning, suffocation, …
       damage.setAmount(damage.getAmount() * DifficultySettings.getEnvMultiplier());
     }

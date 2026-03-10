@@ -21,7 +21,7 @@ indent_size = 2
 
 # Properties files
 [*.properties]
-indent_size = 4
+indent_size = 2
 
 # Gradle wrapper scripts
 [gradlew]

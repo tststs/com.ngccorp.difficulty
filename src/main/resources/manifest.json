@@ -1,7 +1,7 @@
 {
     "Group": "com.ngccorp.difficulty",
     "Name": "NGC Corp. - Difficulty",
-    "Version": "0.1.0",
+    "Version": "0.2.0",
     "Description": "Scale mob and environment damage server-wide with named presets or fine-grained sliders.",
     "Authors": [
         {

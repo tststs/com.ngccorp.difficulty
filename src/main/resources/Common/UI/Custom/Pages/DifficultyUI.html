@@ -1,16 +1,16 @@
-<div class="page-overlay">
-  <div class="decorated-container" data-hyui-title="Server Difficulty" style="anchor-width: 600; anchor-height: 500;">
+<div class="page-overlay" style="layout-mode: centermiddle">
+  <div class="decorated-container" data-hyui-title="Server Difficulty" style="anchor-width: 600;">
     <div class="container-title">
       <!-- Title elements -->
     </div>
-    <div class="container-contents">
+    <div class="container-contents" style="anchor-height: auto;">
       <!-- Preset buttons -->
-      <p style="anchor-top: 16; anchor-bottom: 8">Presets</p>
-      <div style="flex-direction: row; justify-content: space-between;">
+      <p style="anchor-top: 24; anchor-bottom: 8">Presets</p>
+      <div style="flex-direction: row; justify-content: center;">
           <button id="preset-normal">Normal</button>
-          <button id="preset-medium">Medium</button>
-          <button id="preset-hard">Hard</button>
-          <button id="preset-nightmare">Nightmare</button>
+          <button id="preset-medium" style="anchor-left: 8">Medium</button>
+          <button id="preset-hard" style="anchor-left: 8">Hard</button>
+          <button id="preset-nightmare" style="anchor-left: 8">Nightmare</button>
       </div>
       <!-- Mob damage -->
       <p style="anchor-top: 16; anchor-bottom: 8">Mob Damage</p>
@@ -30,7 +30,7 @@
           <input type="range" class="float-slider" id="fall-slider" min="0.1" max="10" step="0.1" value="1" style="anchor-min-width: 400" />
           <p id="fall-label"></p>
       </div>
-      <div style="anchor-top: 16; align-items: stretch;">
+      <div style="anchor-top: 16; anchor-bottom: 24; align-items: stretch;">
         <button id="button-close">OK</button>
       </div>
     </div>

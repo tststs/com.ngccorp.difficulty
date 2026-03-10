@@ -9,7 +9,7 @@ Settings persist across restarts and can be changed live — without reloading t
 - Four named presets: Normal, Medium, Hard, Nightmare
 - Fine-grained sliders (0.1× – 10×) via an in-game admin UI
 - Independent mob, environment, and fall damage multipliers
-- Zero overhead when both multipliers are 1.0 (vanilla)
+- Zero overhead when all multipliers are 1.0 (vanilla)
 - Config persisted to disk automatically
 
 ## Presets
